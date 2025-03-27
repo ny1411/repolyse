@@ -1,4 +1,5 @@
 import React from "react";
+import About from "./About";
 
 function Header() {
 	return (
@@ -10,14 +11,14 @@ function Header() {
                 backdrop-blur-sm"
 			>
 				<h1 className="text-5xl m-24">
-					<a href="./index.html">GitDocX</a>
+					<a href="/">GitDocX</a>
 				</h1>
 				<ul className="text-xl m-24 flex">
 					<li className="p-8">
-						<a href="./about.html"> About</a>
+						<a> About</a>
 					</li>
 					<li className="p-8">
-						<a href="./credits.html">Credits</a>
+						<a>Credits</a>
 					</li>
 				</ul>
 			</header>
