@@ -1,18 +1,19 @@
 import "tailwindcss";
-import BackgroundThreeScene from "./components/BackgroundThreeScene";
-import RepoLinkInput from "./components/RepoLinkInput";
-import SubmitBtn from "./components/SubmitBtn";
-import Header from "./components/Header";
+import { Routes, Route } from "react-router-dom";
+import SearchPage from "./components/SearchPage";
+import Result from "./components/ResultPage";
+import ResultPage from "./components/ResultPage";
+import { InputContext } from "./components/InputContext";
 
 function App() {
 	return (
 		<>
-			<BackgroundThreeScene />
-			<Header />
-			<div className="container h-max absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] flex flex-col justify-center items-center">
-				<RepoLinkInput />
-				<SubmitBtn />
-			</div>
+			<InputContext>
+				<Routes>
+					<Route path="/" element={<SearchPage />}></Route>
+					<Route path="/result" element={<ResultPage />}></Route>
+				</Routes>
+			</InputContext>
 		</>
 	);
 }
