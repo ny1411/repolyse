@@ -40,7 +40,7 @@ function SubmitBtn() {
 					boxShadow:
 						"rgba(0, 105, 150, 1) 0px 0px 50px, rgba(0, 105, 150, 1) 0px 0px 150px",
 				}}
-				onClick={navigate("/result")}
+				onClick={() => navigate("/result")}
 			>
 				SUBMIT
 			</button>

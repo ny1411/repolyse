@@ -4,14 +4,10 @@ import { useInputLinkContext } from "./InputContext";
 function RepoLinkInput(props) {
 	const { inputValue, setInputValue } = useInputLinkContext();
 
-	useEffect(() => {
-		console.log(inputValue);
-	});
-
 	async function HandleLinkPaste() {
 		const pasteLink = await navigator.clipboard.readText();
 		setInputValue(pasteLink);
-		console.log(inputValue);
+		// console.log(inputValue);
 	}
 
 	return (
