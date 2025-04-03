@@ -1,9 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15&display=swap");
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@font-face {
+	font-family: "Chalet New York 1960";
+	src: url("../public/fonts/Chalet\ NewYorkNineteenSixty\ Regular.otf");
+}
+
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+	  display: none;
+	}
+	.no-scrollbar {
+	  -ms-overflow-style: none;
+	  scrollbar-width: none;
+	}
+  }
 
 :root {
 	color: rgba(255, 255, 255, 1);
-	background-color: black;
+	background-color: #171717;
 }
 
 canvas {

@@ -11,7 +11,7 @@ function Header() {
                 backdrop-blur-sm"
 			>
 				<h1 className="text-5xl m-24">
-					<a href="/">GitDocX</a>
+					<a href="/">Repolyze</a>
 				</h1>
 				<ul className="text-xl m-24 flex">
 					<li className="p-8">

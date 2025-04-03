@@ -5,15 +5,17 @@ import BackgroundThreeScene from "./BackgroundThreeScene";
 import Header from "./Header";
 
 function SearchPage() {
-	function HandleSubmit() {
-        
-    }
+	function HandleSubmit() {}
 
 	return (
 		<>
 			<BackgroundThreeScene />
 			<Header />
-			<div className="container h-max absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] flex flex-col justify-center items-center">
+			<div
+				className="container h-max absolute top-[50%] left-[50%] 
+			transform translate-x-[-50%] translate-y-[-50%] 
+			flex flex-col justify-center items-center"
+			>
 				<RepoLinkInput />
 				<SubmitBtn onClick={HandleSubmit} />
 			</div>

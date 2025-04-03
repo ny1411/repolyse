@@ -7,9 +7,9 @@ export function useInputLinkContext() {
 }
 
 export function InputContext({ children }) {
-	const [inputValue, setInputValue] = useState("");
+	const [repoURL, setRepoUrl] = useState("");
 	return (
-		<InputLinkContext.Provider value={{ inputValue, setInputValue }}>
+		<InputLinkContext.Provider value={{ repoURL, setRepoUrl }}>
 			{children}
 		</InputLinkContext.Provider>
 	);

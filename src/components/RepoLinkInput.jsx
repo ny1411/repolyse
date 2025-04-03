@@ -2,18 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { useInputLinkContext } from "./InputContext";
 
 function RepoLinkInput(props) {
-	const { inputValue, setInputValue } = useInputLinkContext();
+	const { repoURL, setRepoUrl } = useInputLinkContext();
 
 	async function HandleLinkPaste() {
 		const pasteLink = await navigator.clipboard.readText();
-		setInputValue(pasteLink);
-		// console.log(inputValue);
+		setRepoUrl(pasteLink);
+		// console.log(repoURL);
 	}
 
 	return (
 		<>
 			<div
-				className="repo-link-form flex justify-center text-center items-center h-[70px] w-[800px] rounded-full bg-black m-20"
+				className="repo-link-form flex justify-center text-center items-center h-[70px] w-[800px] rounded-full 
+                backdrop-blur-xs m-20"
 				style={{
 					boxShadow:
 						"rgba(215, 215, 215, 0.3) 0px 0px 50px, rgb(215, 215, 215, 0.5) 0px 0px 150px",
@@ -45,18 +46,18 @@ function RepoLinkInput(props) {
 				</a>
 
 				<input
-					className="w-5xl outline-none border-none w-full text-center font-['Jersey_10'] text-[2rem] font-light p-2.5"
+					className="outline-none border-none w-full text-center font-['Jersey_10'] text-[2rem] font-light p-2.5"
 					type="text"
 					name="repo-link-input"
 					placeholder="paste repo link"
 					id="#repoLinkInput"
-					value={inputValue}
-					onChange={(e) => setInputValue(e.target.value)}
+					value={repoURL}
+					onChange={(e) => setRepoUrl(e.target.value)}
 				/>
 				<button
 					className="paste-btn border-none outline-none rounded-r-full h-full 
 					flex items-center justify-center cursor-pointer 
-					bg-white hover:bg-[#dddddd] active:bg-[#aaaaaa]"
+					bg-[rgba(255,255,255,0.7)] backdrop-blur-xs hover:bg-[#dddddd] active:bg-[#aaaaaa]"
 					style={{
 						width: "125px",
 						height: "inherit",
