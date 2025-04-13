@@ -15,7 +15,11 @@ function SideBar() {
 	const navigate = useNavigate();
 	return (
 		<>
-			<div className="sidebar h-[calc(100vh-2rem)] w-[23%] p-8 bg-[#222222] rounded-2xl font-['Chalet_New_York_1960'] overflow-y-scroll no-scrollbar">
+			<div
+				className="sidebar h-[calc(100vh-2rem)] w-[25%] p-8 
+            bg-[#222222] rounded-2xl font-['Chalet_New_York_1960'] 
+            overflow-y-scroll no-scrollbar"
+			>
 				<div className="header flex items-center justify-center scale-110 text-[#bd4432] my-1 mb-8">
 					<svg
 						width="188"
@@ -58,7 +62,7 @@ function SideBar() {
 						/>
 					</svg>
 				</div>
-				<div className="sidebar-main text-2xl">
+				<div className="sidebar-main text-xl">
 					<div
 						className="dashboard-btn flex items-center gap-2 p-2 cursor-pointer
                          bg-gradient-to-r from-[rgba(255,92,67,0.03)] via-[rgba(255,92,67,0.3)] via-25%  to-[rgba(255,92,67,0)] "
@@ -90,47 +94,49 @@ function SideBar() {
 						CONTRIBUTERS
 					</div>
 					<div
-						className="file-structure-btn my-2 p-2 cursor-pointer"
+						className="file-structure-btn my-2 p-2"
 						onClick={() => navigate("/documentation")}
 					>
 						<div className="flex items-center gap-2 ">
-							<GitCommitVertical />
-							FILE STRUCTURE
+							<h1 className="flex  cursor-pointer">
+								<GitCommitVertical />
+								FILE STRUCTURE
+							</h1>
 						</div>
 						<div className="file-structure font-['Inter'] text-[0.8rem]">
 							<ul className="file-structure-elements ml-8 ">
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<Folder />
 									</div>
 									node modules
 								</li>
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<Folder />
 									</div>
 									public
 								</li>
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<Folder />
 									</div>
 									src
 								</li>
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<File />
 									</div>
 									index.html
 								</li>
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<File />
 									</div>
 									README.md
 								</li>
-								<li className="file-structure-element flex items-center gap-2 my-2">
-									<div className="logo">
+								<li className="file-structure-element w-fit flex items-center gap-2 my-2 cursor-pointer">
+									<div className="logo scale-90">
 										<File />
 									</div>
 									package.json

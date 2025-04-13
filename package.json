@@ -12,17 +12,22 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.0.16",
     "axios": "^1.8.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.1",
+    "recharts": "^2.15.2",
     "router": "^2.2.0",
     "routes": "^2.1.0",
+    "tailwind-merge": "^3.2.0",
     "tailwindcss": "^4.0.16",
-    "three": "^0.174.0"
+    "three": "^0.174.0",
+    "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/node": "^22.14.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
