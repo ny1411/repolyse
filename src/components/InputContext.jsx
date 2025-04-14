@@ -8,6 +8,7 @@ export function useInputLinkContext() {
 
 export function InputContext({ children }) {
 	const [repoURL, setRepoUrl] = useState("");
+	// console.log(repoURL);
 	return (
 		<InputLinkContext.Provider value={{ repoURL, setRepoUrl }}>
 			{children}

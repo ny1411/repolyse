@@ -52,7 +52,10 @@ function RepoLinkInput(props) {
 					placeholder="paste repo link"
 					id="#repoLinkInput"
 					value={repoURL}
-					onChange={(e) => setRepoUrl(e.target.value)}
+					onChange={(e) => {
+						// console.log("Input changed:", e.target.value);
+						setRepoUrl(e.target.value);
+					}}
 				/>
 				<button
 					className="paste-btn border-none outline-none rounded-r-full h-full 
