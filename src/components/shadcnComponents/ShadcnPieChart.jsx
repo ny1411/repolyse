@@ -1,16 +1,5 @@
-"use client";
+import { Pie, PieChart } from "recharts";
 
-import { TrendingUp } from "lucide-react";
-import { LabelList, Pie, PieChart, Sector } from "recharts";
-
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import {
 	ChartContainer,
 	ChartTooltip,
@@ -63,32 +52,25 @@ export default function Component() {
 			const owner = urlParts[0];
 			const repo = urlParts[1];
 
-			const apiUrl = `https://api.github.com/repos/${owner}/${repo}/languages`;
-			// console.log("Fetching from:", apiUrl);
+			const languageApiUrl = `https://api.github.com/repos/${owner}/${repo}/languages`;
 
 			try {
-				const response = await fetch(apiUrl);
+				const response = await fetch(languageApiUrl);
 				if (!response.ok) {
 					throw new Error("Failed to fetch languages");
 				}
 				const data = await response.json();
-				//console.log("Language data:", data); // e.g., {JavaScript: 12345, HTML: 2345}
-
-				// Calculate total size
 				const totalSize = Object.values(data).reduce(
 					(sum, size) => sum + size,
 					0
 				);
 
-				// Create new chart data based on API response
 				const newChartData = Object.entries(data).map(
 					([lang, size], index) => {
-						// Calculate percentage (rounded to 1 decimal place)
 						const languagePercentage = parseFloat(
 							((size / totalSize) * 100).toFixed(1)
 						);
 
-						// Generate a color based on index or reuse color if language already exists
 						const existingEntry = chartData.find(
 							(item) =>
 								item.language.toLowerCase() ===
@@ -112,17 +94,14 @@ export default function Component() {
 					}
 				);
 
-				// Update chart data
 				setChartData(newChartData);
 
-				// Update chart config with new languages
 				const newConfig = {
 					languagePercentage: {
 						label: "",
 					},
 				};
 
-				// Add each language to the config
 				newChartData.forEach((item) => {
 					newConfig[item.language] = {
 						label:
@@ -140,13 +119,11 @@ export default function Component() {
 		fetchLanguages();
 	}, []);
 
-	// console.log(repoURL);
-
 	return (
 		<div className="">
 			<ChartContainer
 				config={chartConfig}
-				className="mx-auto aspect-square min-h-[400px]"
+				className="mx-auto aspect-square min-h-[300px]"
 			>
 				<PieChart>
 					<ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -154,19 +131,7 @@ export default function Component() {
 						data={chartData}
 						dataKey="languagePercentage"
 						nameKey="language"
-					>
-						<LabelList
-							dataKey="language"
-							className="fill-background"
-							stroke="none"
-							fontSize={12}
-							formatter={(value) =>
-								chartConfig[value]
-									? chartConfig[value].label
-									: value
-							}
-						/>
-					</Pie>
+					></Pie>
 				</PieChart>
 			</ChartContainer>
 		</div>
