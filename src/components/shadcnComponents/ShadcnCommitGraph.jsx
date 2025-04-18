@@ -9,6 +9,7 @@ import {
 	Line,
 	LineChart,
 	CartesianGrid,
+	LabelList,
 } from "recharts";
 import { useInputLinkContext } from "../InputContext";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
@@ -70,30 +71,38 @@ const GitHubCommitsChart = () => {
 	}, []);
 
 	return (
-		<div className="w-full h-[320px] p-4 bg-[#222] text-white dark:bg-zinc-900 rounded-2xl shadow-md">
+		<div className="w-full h-[290px] p-4 flex flex-col justify-center items-center bg-[#222] text-white dark:bg-zinc-900 rounded-2xl shadow-md">
 			<h2 className="text-xl mb-4 text-white">Commits in Last Month</h2>
 
-			<ResponsiveContainer width="100%" height="90%">
-				<ChartContainer config={chartConfig}>
-					<LineChart data={commitData}>
-						<CartesianGrid vertical={false} />
-						<XAxis dataKey="date" tick={{ fontSize: 10 }} />
-						<YAxis />
-						<ChartTooltip
-							cursor={false}
-							content={<ChartTooltipContent hideLabel />}
-						/>
-						<Line
-							type="monotone"
-							dataKey="commits"
-							stroke="#4f46e5"
-							strokeWidth={2}
-							dot={{ r: 3 }}
-							activeDot={{ r: 6 }}
-						/>
-					</LineChart>
-				</ChartContainer>
-			</ResponsiveContainer>
+			<ChartContainer
+				config={chartConfig}
+				className="w-auto h-[85%] overflow-hidden"
+			>
+				<LineChart
+					accessibilityLayer
+					data={commitData}
+					margin={{
+						top: 12,
+						left: 12,
+						right: 12,
+					}}
+				>
+					<CartesianGrid vertical={false} strokeOpacity={0.2} />
+					<XAxis dataKey="date" tick={{ fontSize: 10 }} />
+					<ChartTooltip
+						cursor={false}
+						content={<ChartTooltipContent hideLabel />}
+					/>
+					<Line
+						type="monotone"
+						dataKey="commits"
+						stroke="#ffffff"
+						strokeWidth={2}
+						dot={{ r: 3 }}
+						activeDot={{ r: 6 }}
+					/>
+				</LineChart>
+			</ChartContainer>
 		</div>
 	);
 };
