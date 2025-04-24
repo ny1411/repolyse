@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { useInputLinkContext } from "../InputContext";
+import { useGitHubToken } from "../GithubTokenContext";
 
 export default function Component() {
+	const token = useGitHubToken();
+
 	const { repoURL, setRepoURL } = useInputLinkContext();
 
 	const [chartData, setChartData] = useState([
@@ -55,7 +58,11 @@ export default function Component() {
 			const languageApiUrl = `https://api.github.com/repos/${owner}/${repo}/languages`;
 
 			try {
-				const response = await fetch(languageApiUrl);
+				const response = await fetch(languageApiUrl, {
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				});
 				if (!response.ok) {
 					throw new Error("Failed to fetch languages");
 				}
@@ -123,7 +130,7 @@ export default function Component() {
 		<div className="">
 			<ChartContainer
 				config={chartConfig}
-				className="mx-auto aspect-square min-h-[300px]"
+				className="mx-auto aspect-square min-h-[350px] w-auto"
 			>
 				<PieChart>
 					<ChartTooltip content={<ChartTooltipContent hideLabel />} />

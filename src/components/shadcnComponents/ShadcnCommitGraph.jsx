@@ -13,8 +13,11 @@ import {
 } from "recharts";
 import { useInputLinkContext } from "../InputContext";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../ui/chart";
+import { useGitHubToken } from "../GithubTokenContext";
 
 const GitHubCommitsChart = () => {
+	const token = useGitHubToken();
+
 	const { repoURL, setRepoUrl } = useInputLinkContext();
 
 	const [commitData, setCommitData] = useState([]);
@@ -41,7 +44,11 @@ const GitHubCommitsChart = () => {
 			const url = `https://api.github.com/repos/${owner}/${repo}/commits?since=${sinceDate}&per_page=100`;
 
 			try {
-				const response = await fetch(url);
+				const response = await fetch(url, {
+					headers: {
+						Authorization: `token ${token}`,
+					},
+				});
 				const data = await response.json();
 
 				const dailyCount = {};
@@ -71,8 +78,8 @@ const GitHubCommitsChart = () => {
 	}, []);
 
 	return (
-		<div className="w-full h-[290px] p-4 flex flex-col justify-center items-center bg-[#222] text-white dark:bg-zinc-900 rounded-2xl shadow-md">
-			<h2 className="text-xl mb-4 text-white">Commits in Last Month</h2>
+		<div className="w-fit h-[350px] p-4 flex flex-col justify-center items-center bg-[#222] text-white dark:bg-zinc-900 rounded-2xl shadow-md">
+			<h2 className="text-2xl mb-4 text-white">Commits in Last Month</h2>
 
 			<ChartContainer
 				config={chartConfig}
@@ -96,7 +103,7 @@ const GitHubCommitsChart = () => {
 					<Line
 						type="monotone"
 						dataKey="commits"
-						stroke="#ffffff"
+						stroke="#4f46e5"
 						strokeWidth={2}
 						dot={{ r: 3 }}
 						activeDot={{ r: 6 }}
