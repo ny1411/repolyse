@@ -127,10 +127,11 @@ export default function Component() {
 	}, []);
 
 	return (
-		<div className="">
+		<div className=" flex flex-col items-center justify-center gap-4 p-4 font-['Chalet_New_York_1960']">
+			Top Languages
 			<ChartContainer
 				config={chartConfig}
-				className="mx-auto aspect-square min-h-[350px] w-auto"
+				className=" min-h-[200px] w-[400px]"
 			>
 				<PieChart>
 					<ChartTooltip content={<ChartTooltipContent hideLabel />} />

@@ -78,12 +78,11 @@ const GitHubCommitsChart = () => {
 	}, []);
 
 	return (
-		<div className="w-fit h-[350px] p-4 flex flex-col justify-center items-center bg-[#222] text-white dark:bg-zinc-900 rounded-2xl shadow-md">
-			<h2 className="text-2xl mb-4 text-white">Commits in Last Month</h2>
-
+		<div className=" flex flex-col items-center justify-center gap-4 p-4 font-['Chalet_New_York_1960']">
+			Commits in Last Month
 			<ChartContainer
 				config={chartConfig}
-				className="w-auto h-[85%] overflow-hidden"
+				className="h-[225px] w-[600px]"
 			>
 				<LineChart
 					accessibilityLayer

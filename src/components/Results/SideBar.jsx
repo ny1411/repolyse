@@ -17,7 +17,7 @@ function SideBar() {
 		<>
 			<div
 				className="sidebar h-[calc(100vh-2rem)] w-[30%] p-8 
-            bg-[#222222] rounded-2xl font-['Chalet_New_York_1960'] 
+            bg-[#1d1d1d] border-[1px] border-[#383838] rounded-2xl font-['Chalet_New_York_1960'] 
             overflow-y-scroll no-scrollbar"
 			>
 				<div className="header flex items-center justify-center scale-110 text-[#bd4432] my-1 mb-8">
