@@ -38,12 +38,12 @@ const ShadcnPullsMultipleGraph = () => {
 			const url = `https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=100`;
 
 			try {
-				const res = await fetch(url, {
+				const response = await fetch(url, {
 					headers: {
 						Authorization: `token ${token}`,
 					},
 				});
-				const data = await res.json();
+				const data = await response.json();
 
 				const monthlyStats = {};
 

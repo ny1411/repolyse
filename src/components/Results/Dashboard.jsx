@@ -8,16 +8,14 @@ import ShadcnPullsMultipleGraph from "../shadcnComponents/ShadcnPullsMultipleGra
 import { useGitHubToken } from "../GithubTokenContext.jsx";
 
 function Dashboard() {
-	const { repoURL, setRepoUrl } = useInputLinkContext();
+	const { repoURL } = useInputLinkContext();
 	const [starredCount, setStarredCount] = useState(0);
 	const [forkedCount, setForkedCount] = useState(0);
 	const [watchersCount, setWatchersCount] = useState(0);
-	const [openIssuesCount, setOpenIssuesCount] = useState(0);
-	const [closedIssuesCount, setClosedIssuesCount] = useState(0);
 
 	const [username, setUsername] = useState("");
 	const [repoName, setRepoName] = useState("");
-	const [repoAvatarURL, setRepoAvatarURL] = useState("");
+	const [repoAvatarURL, setRepoAvatarURL] = useState();
 	const [userAccountURL, setUserAccountURL] = useState("");
 
 	const token = useGitHubToken();
@@ -58,7 +56,7 @@ function Dashboard() {
 
 	return (
 		<>
-			<div className="dashboard p-4 flex gap-3 bg-[#0f0f0e]">
+			<div className="dashboard p-4 flex gap-3 bg-[#0f0f0e] ">
 				<SideBar />
 				<div className="main-content h-[calc(100% - 1 rem)] w-full flex flex-col gap-2 p-4 rounded-2xl">
 					<div className=" flex justify-baseline items-baseline gap-4">
@@ -72,9 +70,8 @@ function Dashboard() {
 					<div className="header flex justify-between items-center">
 						<div className="user-details flex items-center gap-2 p-2">
 							<img
-								src={repoAvatarURL}
+								src={repoAvatarURL || null}
 								alt=""
-								srcset=""
 								className="user-avatar h-12 w-12 rounded-lg"
 							/>
 

@@ -9,10 +9,17 @@ import {
 	Users,
 } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SideBar() {
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const isActive = (path) =>
+		location.pathname === path
+			? "bg-gradient-to-r from-[rgba(255,92,67,0.03)] via-[rgba(255,92,67,0.3)] via-25%  to-[rgba(255,92,67,0)] "
+			: "";
+
 	return (
 		<>
 			<div
@@ -20,7 +27,10 @@ function SideBar() {
             bg-[#1d1d1d] border-[1px] border-[#383838] rounded-2xl font-['Chalet_New_York_1960'] 
             overflow-y-scroll no-scrollbar"
 			>
-				<div className="header flex items-center justify-center scale-110 text-[#bd4432] my-1 mb-8">
+				<div
+					className="header flex items-center justify-center scale-110 text-[#bd4432] my-1 mb-8"
+					onClick={() => navigate("/")}
+				>
 					<svg
 						width="188"
 						height="48"
@@ -64,29 +74,34 @@ function SideBar() {
 				</div>
 				<div className="sidebar-main text-xl">
 					<div
-						className="dashboard-btn flex items-center gap-2 p-2 cursor-pointer
-                         bg-gradient-to-r from-[rgba(255,92,67,0.03)] via-[rgba(255,92,67,0.3)] via-25%  to-[rgba(255,92,67,0)] "
+						className={`dashboard-btn flex items-center gap-2 p-2 cursor-pointer ${isActive(
+							"/dashboard"
+						)}`}
 						onClick={() => navigate("/dashboard")}
 					>
 						<LayoutDashboard color="#ff5c43" />
 						DASHBOARD
 					</div>
-					<div
+					{/* <div
 						className="insights-btn my-2 flex items-center gap-2 p-2 cursor-pointer"
 						onClick={() => navigate("/insights")}
 					>
 						<ChartLine />
 						INSIGHTS
-					</div>
+					</div> */}
 					<div
-						className="Issues-btn my-2 flex items-center gap-2 p-2 cursor-pointer"
+						className={`issues-btn my-2 flex items-center gap-2 p-2 cursor-pointer ${isActive(
+							"/issues"
+						)}`}
 						onClick={() => navigate("/issues")}
 					>
 						<CircleDot />
 						ISSUES
 					</div>
 					<div
-						className="contributers-btn my-2 flex items-center gap-2 p-2 cursor-pointer"
+						className={`contributers-btn my-2 flex items-center gap-2 p-2 cursor-pointer ${isActive(
+							"/contributers"
+						)}`}
 						onClick={() => navigate("/contributers")}
 					>
 						{" "}
@@ -94,10 +109,14 @@ function SideBar() {
 						CONTRIBUTERS
 					</div>
 					<div
-						className="file-structure-btn my-2 p-2"
+						className={`file-structure-btn`}
 						onClick={() => navigate("/documentation")}
 					>
-						<div className="flex items-center gap-2 ">
+						<div
+							className={`flex items-center gap-2 mb-2 py-2 ${isActive(
+								"/documentation"
+							)} `}
+						>
 							<h1 className="flex  cursor-pointer">
 								<GitCommitVertical />
 								FILE STRUCTURE
