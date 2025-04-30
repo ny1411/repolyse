@@ -13,6 +13,8 @@ function Issues() {
 	const [repoAvatarURL, setRepoAvatarURL] = useState();
 	const [userAccountURL, setUserAccountURL] = useState("");
 
+	const [issuesList, setIssuesList] = useState([]);
+
 	const token = useGitHubToken();
 	useEffect(() => {
 		const fetchBasicData = async () => {
@@ -81,9 +83,12 @@ function Issues() {
 						url: issue.html_url,
 					};
 				});
-				console.log(issuesList);
+
+				setIssuesList(issuesList);
+				// console.log(issuesListData);
 				setOpenIssuesCount(
-					issuesList.filter((issue) => issue.state === "open").length
+					issuesList.filter((issue) => issue.state === "open")
+						.length
 				);
 				setClosedIssuesCount(
 					issuesList.filter((issue) => issue.state === "closed")
@@ -135,6 +140,9 @@ function Issues() {
 								{closedIssuesCount}
 							</div>
 						</div>
+					</div>
+					<div className="issues-list-container">
+						<IssuesList issues={issuesList} />
 					</div>
 				</div>
 			</div>

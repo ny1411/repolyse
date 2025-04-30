@@ -69,11 +69,13 @@ function Dashboard() {
 					</div>
 					<div className="header flex justify-between items-center">
 						<div className="user-details flex items-center gap-2 p-2">
-							<img
-								src={repoAvatarURL || null}
-								alt=""
-								className="user-avatar h-12 w-12 rounded-lg"
-							/>
+							<a href={userAccountURL}>
+								<img
+									src={repoAvatarURL || null}
+									alt=""
+									className="user-avatar h-12 w-12 rounded-lg"
+								/>
+							</a>
 
 							<div>
 								<a

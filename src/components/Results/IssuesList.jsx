@@ -1,71 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { useInputLinkContext } from "../InputContext";
-import { useGitHubToken } from "../GithubTokenContext";
+import React from "react";
 
-function IssuesList() {
-	const { repoURL, serRepoURL } = useInputLinkContext();
-
-	const [openIssuesCount, setOpenIssuesCount] = useState(0);
-	const [closedIssuesCount, setClosedIssuesCount] = useState(0);
-
-	const token = useGitHubToken();
-
-	useEffect(() => {
-		const fetchIssues = async () => {
-			const urlParts = repoURL
-				.replace("https://github.com/", "")
-				.split("/");
-			const owner = urlParts[0];
-			const repo = urlParts[1];
-
-			const apiURL = `https://api.github.com/repos/${owner}/${repo}/issues`;
-
-			try {
-				const response = await fetch(apiURL, {
-					headers: {
-						Authorization: `token ${token}`,
-					},
-				});
-				if (!response.ok) {
-					throw new Error("Failed to fetch issues");
-				}
-
-				const data = await response.json();
-
-				const issuesList = data.map((issue) => {
-					return {
-						title: issue.title,
-						state: issue.state,
-						created_at: issue.created_at,
-						updated_at: issue.updated_at,
-						closed_at: issue.closed_at,
-						url: issue.html_url,
-					};
-				});
-				console.log(issuesList);
-				setOpenIssuesCount(
-					issues.filter((issue) => issue.state === "open").length
-				);
-				setClosedIssuesCount(
-					issues.filter((issue) => issue.state === "closed").length
-				);
-			} catch (error) {
-				console.error("Error fetching issues:", error);
-			}
-		};
-		fetchIssues();
-	}, []);
+function IssuesList({ issues }) {
 	return (
 		<>
-			<div className="issues-list flex gap-2">
-				<div className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-					<p>Open Issues:</p>
-					{openIssuesCount}
-				</div>
-				<div className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-					<p>Closed Issues:</p>
-					{closedIssuesCount}
-				</div>
+			<div className="issues-list bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl p-4 flex flex-col gap-2">
+				{issues.map((issue, index) => (
+					<div key={index} className="issue-list-items-container">
+						<div className="issues-list-item h-full w-full flex justify-between gap-4 p-4 border-[1px] border-[#333] rounded-lg shadow-2xl hover:bg-[#222222]  ">
+							<div>
+								<a
+									href={`${issue.url}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="hover:underline"
+								>
+									{issue.title}
+								</a>
+							</div>
+							<div>
+								<div className=" flex gap-4">
+									<div>
+										Status:{" "}
+										<span
+											className={`${
+												issue.status === "open"
+													? "text-green-500"
+													: "text-red-500"
+											}`}
+										>
+											{issue.status === "open"
+												? "Open"
+												: "Closed"}
+										</span>{" "}
+									</div>
+									<div>
+										Created:{" "}
+										{new Date(
+											issue.created_at
+										).toLocaleDateString()}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				))}
 			</div>
 		</>
 	);
