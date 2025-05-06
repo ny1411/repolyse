@@ -1,11 +1,9 @@
 import {
-	ChartLine,
 	CircleDot,
 	File,
 	Folder,
 	GitCommitVertical,
 	LayoutDashboard,
-	Lightbulb,
 	Users,
 } from "lucide-react";
 import React from "react";
@@ -17,7 +15,7 @@ function SideBar() {
 
 	const isActive = (path) =>
 		location.pathname === path
-			? "bg-gradient-to-r from-[rgba(255,92,67,0.03)] via-[rgba(255,92,67,0.3)] via-25%  to-[rgba(255,92,67,0)] "
+			? "text-[#ff5c43] bg-gradient-to-r from-[rgba(255,92,67,0.03)] via-[rgba(255,92,67,0.3)] via-25%  to-[rgba(255,92,67,0)] "
 			: "";
 
 	return (
@@ -79,7 +77,7 @@ function SideBar() {
 						)}`}
 						onClick={() => navigate("/dashboard")}
 					>
-						<LayoutDashboard color="#ff5c43" />
+						<LayoutDashboard />
 						DASHBOARD
 					</div>
 					{/* <div
