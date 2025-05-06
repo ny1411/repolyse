@@ -59,7 +59,7 @@ function Issues() {
 			const owner = urlParts[0];
 			const repo = urlParts[1];
 
-			const apiURL = `https://api.github.com/repos/${owner}/${repo}/issues`;
+			const apiURL = `https://api.github.com/repos/${owner}/${repo}/issues?state=all`;
 
 			try {
 				const response = await fetch(apiURL, {
@@ -73,7 +73,7 @@ function Issues() {
 
 				const data = await response.json();
 
-				const issuesList = data.map((issue) => {
+				const issuesListData = data.map((issue) => {
 					return {
 						title: issue.title,
 						state: issue.state,
@@ -84,14 +84,14 @@ function Issues() {
 					};
 				});
 
-				setIssuesList(issuesList);
-				// console.log(issuesListData);
+				setIssuesList(issuesListData);
+				// console.log(issuesListData[1].state);
 				setOpenIssuesCount(
-					issuesList.filter((issue) => issue.state === "open")
+					issuesListData.filter((issue) => issue.state === "open")
 						.length
 				);
 				setClosedIssuesCount(
-					issuesList.filter((issue) => issue.state === "closed")
+					issuesListData.filter((issue) => issue.state === "closed")
 						.length
 				);
 			} catch (error) {

@@ -1,6 +1,7 @@
 import React from "react";
 
 function IssuesList({ issues }) {
+	console.log(issues[0]);
 	return (
 		<>
 			<div className="issues-list bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl p-4 flex flex-col gap-2">
@@ -20,18 +21,18 @@ function IssuesList({ issues }) {
 							<div>
 								<div className=" flex gap-4">
 									<div>
-										Status:{" "}
+										State:{" "}
 										<span
 											className={`${
-												issue.status === "open"
+												issue.state == "open"
 													? "text-green-500"
 													: "text-red-500"
 											}`}
-										>
-											{issue.status === "open"
+										>{" "}
+											{issue.state == "open"
 												? "Open"
 												: "Closed"}
-										</span>{" "}
+										</span>
 									</div>
 									<div>
 										Created:{" "}
