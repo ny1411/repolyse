@@ -73,6 +73,7 @@ function Issues() {
 
 				const data = await response.json();
 
+				console.log(data[0]);
 				const issuesListData = data.map((issue) => {
 					return {
 						title: issue.title,
@@ -81,11 +82,13 @@ function Issues() {
 						updated_at: issue.updated_at,
 						closed_at: issue.closed_at,
 						url: issue.html_url,
+						user: issue.user.login,
+						user_avatar: issue.user.avatar_url,
 					};
 				});
 
 				setIssuesList(issuesListData);
-				// console.log(issuesListData[1].state);
+				// console.log(issuesListData[1]);
 				setOpenIssuesCount(
 					issuesListData.filter((issue) => issue.state === "open")
 						.length
