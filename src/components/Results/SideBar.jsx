@@ -21,7 +21,7 @@ function SideBar() {
 	return (
 		<>
 			<div
-				className="sidebar h-[calc(100vh-2rem)] w-[30%] p-8 
+				className="sidebar h-[calc(100vh-2rem)] min-w-[20%] p-8 
             bg-[#1d1d1d] border-[1px] border-[#383838] rounded-2xl font-['Chalet_New_York_1960'] 
             overflow-y-scroll no-scrollbar"
 			>

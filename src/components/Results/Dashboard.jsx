@@ -68,19 +68,19 @@ function Dashboard() {
 						</h1>
 					</div>
 					<div className="header flex justify-between items-center">
-						<div className="user-details flex items-center gap-2 p-2">
+						<div className="user-details flex items-center gap-2 p-2 hover:scale-102 transition-all duration-300 ease-in-out">
 							<a href={userAccountURL}>
 								<img
 									src={repoAvatarURL || null}
 									alt=""
-									className="user-avatar h-12 w-12 rounded-lg"
+									className="user-avatar h-12 w-12 rounded-lg hover:scale-102 transition-all duration-300 ease-in-out"
 								/>
 							</a>
 
 							<div>
 								<a
 									href={userAccountURL}
-									className="hover:underline font-bold"
+									className="hover:underline font-bold "
 								>
 									{username}
 								</a>
@@ -91,18 +91,18 @@ function Dashboard() {
 							</div>
 						</div>
 						<div className="repo-details-container flex gap-2">
-							<div className="repo-stars h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-								<Star />
+							<div className="repo-stars h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] shadow-2xl  border-[#383838] rounded-xl hover:scale-102 transition-all duration-300 ease-in-out">
+								<Star className="hover:text-amber-300" />
 								<p>Stars:</p>
 								{starredCount}
 							</div>
-							<div className="repo-watchers h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-								<Eye />
+							<div className="repo-watchers h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] shadow-2xl  border-[#383838] rounded-xl hover:scale-102 transition-all duration-300 ease-in-out">
+								<Eye className="hover:text-neutral-500" />
 								<p>Watchers:</p>
 								{watchersCount}
 							</div>
-							<div className="repo-forks h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-								<GitFork />
+							<div className="repo-forks h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] shadow-2xl  border-[#383838] rounded-xl hover:scale-102 transition-all duration-300 ease-in-out">
+								<GitFork className="hover:text-purple-400" />
 								<p>Forks:</p>
 								{forkedCount}
 							</div>
@@ -113,14 +113,14 @@ function Dashboard() {
 							<div
 								className="repo-top-language h-fit w-fit
 							p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl text-2xl
-							font-['Chalet_New_York_1960']"
+							font-['Chalet_New_York_1960'] shadow-2xl hover:scale-102 transition-all duration-300 ease-in-out"
 							>
 								<ShadcnPieChart />
 							</div>
 							<div
 								className="repo-top-language h-fit w-fit
 							p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl text-2xl
-							font-['Chalet_New_York_1960']"
+							font-['Chalet_New_York_1960'] shadow-2xl hover:scale-102 transition-all duration-300 ease-in-out"
 							>
 								<ShadcnCommitGraph />
 							</div>
@@ -133,11 +133,11 @@ function Dashboard() {
 							font-['Chalet_New_York_1960'] text-2xl
 							rounded-xl"
 						>
-							<div className="p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
+							<div className="p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl shadow-2xl hover:scale-102 transition-all duration-300 ease-in-out">
 								<ShadcnPullsMultipleGraph />
 							</div>
-							<div className="basic-documentation h-full w-[470px] p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
-								<h1 className="flex justify-center items-center">
+							<div className="basic-documentation h-full w-[470px] p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl hover:scale-102 transition-all duration-300 ease-in-out">
+								<h1 className="flex justify-center items-center shadow-2xl  ">
 									Documentation
 								</h1>
 							</div>

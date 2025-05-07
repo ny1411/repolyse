@@ -73,7 +73,7 @@ function Issues() {
 
 				const data = await response.json();
 
-				console.log(data[0]);
+				// console.log(data[0]);
 				const issuesListData = data.map((issue) => {
 					return {
 						title: issue.title,
@@ -84,6 +84,7 @@ function Issues() {
 						url: issue.html_url,
 						user: issue.user.login,
 						user_avatar: issue.user.avatar_url,
+						user_url: issue.user.html_url,
 					};
 				});
 
@@ -106,18 +107,18 @@ function Issues() {
 
 	return (
 		<>
-			<div className="issues flex gap-3 p-4 bg-[#0f0f0e]">
+			<div className="issues  p-4 flex gap-3 bg-[#0f0f0e]">
 				<SideBar />
 				<div className="main-content h-[calc(100% - 1 rem)] w-full flex flex-col gap-2 p-4 rounded-2xl">
 					<h1 className="header text-6xl font-['Bebas_Neue_Pro_SemiExpanded_ExtraBold'] text-[#e0c38e]">
 						Issues
 					</h1>
 					<div className="header flex justify-between items-center">
-						<div className="user-details flex items-center gap-2 p-2">
+						<div className="user-details flex items-center gap-2 p-2 hover:scale-102 transition-all duration-300 ease-in-out">
 							<img
 								src={repoAvatarURL || null}
 								alt=""
-								className="user-avatar h-12 w-12 rounded-lg"
+								className="user-avatar h-12 w-12 rounded-lg hover:scale-102 transition-all duration-300 ease-in-out"
 							/>
 
 							<div>
@@ -134,11 +135,19 @@ function Issues() {
 							</div>
 						</div>
 						<div className="issues-list flex gap-2 whitespace-nowrap">
-							<div className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
+							<div
+								className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2
+							 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl 
+							 hover:scale-102 transition-all duration-300 ease-in-out hover:text-green-400"
+							>
 								<p>Open Issues:</p>
 								{openIssuesCount}
 							</div>
-							<div className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl">
+							<div
+								className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2
+							 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl 
+							hover:scale-102 transition-all duration-300 ease-in-out hover:text-red-400"
+							>
 								<p>Closed Issues:</p>
 								{closedIssuesCount}
 							</div>
