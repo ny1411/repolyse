@@ -134,7 +134,7 @@ function Issues() {
 								</a>
 							</div>
 						</div>
-						<div className="issues-list flex gap-2 whitespace-nowrap">
+						<div className="issues-count flex gap-2 whitespace-nowrap">
 							<div
 								className="repo-open-issue-count h-auto w-full p-4 flex justify-center gap-2
 							 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl 

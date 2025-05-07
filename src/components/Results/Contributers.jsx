@@ -87,26 +87,33 @@ function Contributers() {
 		};
 		fetchContributors();
 	}, []);
+
+	const totalContributions = contributorListData.reduce(
+		(acc, contributor) => acc + contributor.contributions,
+		0
+	);
+	// console.log(totalContributions);
 	return (
 		<>
-			<div className="contributers  p-4 flex gap-3 bg-[#0f0f0e]">
+			<div className="contributers flex gap-2 p-4  bg-[#0f0f0e]">
 				<SideBar />
-				<div className="main-content h-[calc(100% - 1 rem)] w-full p-8 rounded-2xl">
+				<div className="main-content h-[calc(100% - 1 rem)] flex flex-col w-full gap-2 p-8 rounded-2xl">
 					<h1 className="header text-6xl font-['Bebas_Neue_Pro_SemiExpanded_ExtraBold'] text-[#e0c38e]">
 						Contributers
 					</h1>
-					<div className="header flex justify-between items-center">
-						<div className="user-details flex items-center gap-2 p-2">
+
+					<div className="header flex gap-2 justify-between items-center ">
+						<div className="user-details flex items-center gap-2 p-2 hover:scale-102 transition-all duration-300 ease-in-out">
 							<img
 								src={repoAvatarURL || null}
 								alt=""
-								className="user-avatar h-12 w-12 rounded-lg"
+								className="user-avatar h-12 w-12 rounded-lg  hover:scale-102 transition-all duration-300 ease-in-out"
 							/>
 
 							<div>
 								<a
 									href={userAccountURL}
-									className="hover:underline font-bold"
+									className="hover:underline font-bold "
 								>
 									{username}
 								</a>
@@ -115,6 +122,13 @@ function Contributers() {
 									{repoName}
 								</a>
 							</div>
+						</div>
+						<div
+							className="contributers-count h-auto w-fit p-4 flex justify-center gap-2
+							 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl 
+							 hover:scale-102 transition-all duration-300 ease-in-out hover:text-neutral-400"
+						>
+							Total Contributions: {totalContributions}
 						</div>
 					</div>
 					<div
