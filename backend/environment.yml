@@ -1,0 +1,15 @@
+name: repo-analyzer
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - flask
+  - flask-cors
+  - google-generativeai
+  - transformers
+  - pytorch
+  - sentencepiece
+  - github3.py
+  - numpy
+  - tqdm
