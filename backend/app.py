@@ -16,9 +16,12 @@ app = Flask(__name__)
 CORS(app)
 
 # Gemini API Setup
-GEMINI_API_KEY = "AIzaSyCM5KUEXu0Aed4LoxDzYs8D3NhQTv56j_4"  # Replace with your key
-genai.configure(api_key=GEMINI_API_KEY)
-gemini_client = genai.GenerativeModel("gemini-1.5-flash")
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    print("Warning: GEMINI_API_KEY not found in environment variables.")
+genai.configure(api_key=api_key)
+gemini_client = genai.GenerativeModel("gemini-2.5-flash")
 
 # Load Models
 codebert_tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
