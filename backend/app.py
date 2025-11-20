@@ -259,7 +259,7 @@ def analyze_repo(repo_url, github_token=None):
         file_jsons.append(file_json_path)
 
     file_summaries = "\n".join(f"{path}: {gemini_summarize(code_files[path]['content'], path)[:100]}..." for path in code_files.keys())
-    prompt = f"Based on these file summaries and metadata, describe the purpose of this repository:\nMetadata: {metadata}\nFiles:\n{file_summaries}"
+    prompt = f"Based on these file summaries and metadata, provide a concise summary of the purpose of this repository. The summary should be under 250 words. Output ONLY the tagline text. Do not use quotes or markdown. \nMetadata: {metadata}\nFiles:\n{file_summaries}"
     try:
         response = gemini_client.generate_content(prompt)
         repo_purpose = response.text
