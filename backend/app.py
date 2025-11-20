@@ -11,6 +11,7 @@ from flask_cors import CORS
 import os
 import hashlib
 import zipfile
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
@@ -139,7 +140,7 @@ def chunk_code(code_snippet, chunk_size=300, overlap=50):
     return chunks
 
 def gemini_summarize(code_snippet, file_path):
-    prompt = f"Generate a concise natural language summary for this code:\n```python\n{code_snippet}\n```"
+    prompt = f"You are an expert developer. Provide a concise, high-level summary of the following code. Focus on what the code does and its key functionality. Do not include any code in your response.\n\nCode:\n```python\n{code_snippet}\n```"
     try:
         response = gemini_client.generate_content(prompt)
         return response.text
@@ -148,7 +149,7 @@ def gemini_summarize(code_snippet, file_path):
         return f"Unable to summarize {file_path}"
 
 def gemini_document(code_snippet, file_path):
-    prompt = f"Generate detailed documentation for this code:\n```python\n{code_snippet}\n```"
+    prompt = f"You are an expert technical writer. Generate detailed documentation for the following code in Markdown format. Include the following sections:\n- **Description**: A detailed explanation of what the code does.\n- **Signatures**: Function/Class signatures.\n- **Parameters**: List of parameters with types and descriptions.\n- **Returns**: Description of return values.\n- **Examples**: Usage examples if applicable.\n\nCode:\n```python\n{code_snippet}\n```"
     try:
         response = gemini_client.generate_content(prompt)
         return response.text
@@ -266,11 +267,13 @@ def analyze_repo(repo_url, github_token=None):
         print(f"Error determining repo purpose: {e}")
         repo_purpose = "Unable to determine repo purpose"
 
-    tagline_prompt = f"Create a catchy tagline for this repository based on its purpose:\n{repo_purpose}"
-    t5_inputs = t5_tokenizer(tagline_prompt, return_tensors="pt", truncation=True, max_length=512)
-    with torch.no_grad():
-        t5_outputs = t5_model.generate(**t5_inputs, max_length=50, num_beams=4, early_stopping=True)
-    repo_tagline = t5_tokenizer.decode(t5_outputs[0], skip_special_tokens=True)
+    tagline_prompt = f"Create a catchy, single-sentence tagline for this repository based on its purpose. The tagline should be short, engaging, and descriptive. Output ONLY the tagline text. Do not use quotes or markdown.\n\nPurpose:\n{repo_purpose}"
+    try:
+        response = gemini_client.generate_content(tagline_prompt)
+        repo_tagline = response.text.strip()
+    except Exception as e:
+        print(f"Error generating tagline: {e}")
+        repo_tagline = "Analyze, Understand, Improve."
 
     all_embeddings = []
     for file_path in code_files.keys():
