@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Gemini API Setup
-GEMINI_API_KEY = "API_KEY"  # Replace with your key
+GEMINI_API_KEY = "AIzaSyCM5KUEXu0Aed4LoxDzYs8D3NhQTv56j_4"  # Replace with your key
 genai.configure(api_key=GEMINI_API_KEY)
 gemini_client = genai.GenerativeModel("gemini-1.5-flash")
 
@@ -282,11 +282,6 @@ def analyze_repo(repo_url):
         avg_complexity, repo_coherence = 0, 0
 
     quality_scores = []
-    for file_path in code_files.keys():
-        analysis = json.load(open(f"{output_dir}/file_{hashlib.md5(file_path.encode()).hexdigest()}.json"))
-        quality_scores.append(analysis["quality_score"])
-    avg_quality_score = np.mean(quality_scores) if quality_scores else 0
-
     repo_stats = {
         "metadata": metadata,
         "repo_purpose": repo_purpose,
@@ -306,7 +301,18 @@ def analyze_repo(repo_url):
         zipf.write(repo_stats_path, "repo_stats.json")
 
     progress["status"] = "complete"
-    return {"file_jsons": file_jsons, "repo_stats": repo_stats_path, "zip_path": zip_path}
+    
+    # Load all file analyses to return
+    all_file_analysis = []
+    for file_json_path in file_jsons:
+        with open(file_json_path, "r") as f:
+            all_file_analysis.append(json.load(f))
+
+    return {
+        "repo_stats": repo_stats,
+        "file_analysis": all_file_analysis,
+        "zip_path": zip_path
+    }
 
 @app.route('/analyze', methods=['POST'])
 def analyze():

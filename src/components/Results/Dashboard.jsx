@@ -3,7 +3,7 @@ import SideBar from "./SideBar.jsx";
 import ShadcnPieChart from "../shadcnComponents/ShadcnPieChart.jsx";
 import ShadcnCommitGraph from "../shadcnComponents/ShadcnCommitGraph.jsx";
 import { useInputLinkContext } from "../InputContext.jsx";
-import { Eye, GitFork, Star } from "lucide-react";
+import { Eye, GitFork, Star, Loader2 } from "lucide-react";
 import ShadcnPullsMultipleGraph from "../shadcnComponents/ShadcnPullsMultipleGraph.jsx";
 import { useGitHubToken } from "../GithubTokenContext.jsx";
 
@@ -19,6 +19,10 @@ function Dashboard() {
 	const [userAccountURL, setUserAccountURL] = useState("");
 
 	const token = useGitHubToken();
+	const [analysisData, setAnalysisData] = useState(null);
+	const [isAnalysisLoading, setIsAnalysisLoading] = useState(false);
+	const [analysisError, setAnalysisError] = useState(null);
+
 	useEffect(() => {
 		const fetchLanguages = async () => {
 			const urlParts = repoURL
@@ -51,8 +55,42 @@ function Dashboard() {
 			}
 		};
 
+		const fetchAnalysis = async () => {
+			if (!repoURL) return;
+			setIsAnalysisLoading(true);
+			try {
+				const response = await fetch("http://localhost:5000/analyze", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ repo_url: repoURL }),
+				});
+				if (!response.ok) throw new Error("Analysis failed");
+				const data = await response.json();
+				setAnalysisData(data);
+			} catch (err) {
+				setAnalysisError(err.message);
+				console.error("Error fetching analysis:", err);
+			} finally {
+				setIsAnalysisLoading(false);
+			}
+		};
+
 		fetchLanguages();
-	}, []);
+		fetchAnalysis();
+	}, [repoURL, token]);
+
+	if (isAnalysisLoading) {
+		return (
+			<div className="flex h-screen w-full items-center justify-center bg-[#0f0f0e] text-[#e0c38e]">
+				<Loader2 className="h-16 w-16 animate-spin" />
+				<span className="ml-4 text-2xl font-['Bebas_Neue_Pro_SemiExpanded_ExtraBold']">
+					Analyzing Repository...
+				</span>
+			</div>
+		);
+	}
 
 	return (
 		<>
@@ -140,6 +178,39 @@ function Dashboard() {
 								<h1 className="flex justify-center items-center shadow-2xl  ">
 									Documentation
 								</h1>
+								{analysisData && (
+									<div className="ai-analysis p-4 bg-[#1d1d1d] border-[1px] border-[#383838] rounded-xl shadow-2xl hover:scale-102 transition-all duration-300 ease-in-out">
+										<h2 className="text-2xl font-['Bebas_Neue_Pro_SemiExpanded_ExtraBold'] mb-4 text-[#e0c38e]">
+											AI Analysis
+										</h2>
+										<div className="grid grid-cols-2 gap-4 font-['Chalet_New_York_1960'] text-lg">
+											<div className="col-span-2">
+												<p className="font-bold text-neutral-400">Tagline:</p>
+												<p>{analysisData.repo_stats.repo_tagline}</p>
+											</div>
+											<div className="col-span-2">
+												<p className="font-bold text-neutral-400">Purpose:</p>
+												<p>{analysisData.repo_stats.repo_purpose}</p>
+											</div>
+											<div>
+												<p className="font-bold text-neutral-400">
+													Complexity Score:
+												</p>
+												<p>
+													{analysisData.repo_stats.avg_complexity.toFixed(2)}
+												</p>
+											</div>
+											<div>
+												<p className="font-bold text-neutral-400">
+													Quality Score:
+												</p>
+												<p>
+													{analysisData.repo_stats.avg_quality_score.toFixed(2)}
+												</p>
+											</div>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
