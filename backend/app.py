@@ -81,11 +81,22 @@ distilbert_model.eval()
 
 progress = {"status": "idle", "current_file": "", "total_files": 0, "processed_files": 0}
 
-def fetch_repo_data(repo_url):
+def fetch_repo_data(repo_url, github_token=None):
     parts = repo_url.split('/')
     owner, repo_name = parts[-2], parts[-1]
-    gh = github3.GitHub()
-    repo = gh.repository(owner, repo_name)
+    
+    if github_token:
+        gh = github3.login(token=github_token)
+    else:
+        gh = github3.GitHub()
+        
+    try:
+        repo = gh.repository(owner, repo_name)
+        if not repo:
+            raise Exception("Repository not found or access denied")
+    except Exception as e:
+        raise Exception(f"Error accessing repository: {e}")
+
     metadata = {"name": repo.name, "description": repo.description, "stars": repo.stargazers_count, "language": repo.language}
     code_files = {}
     def fetch_directory(path=""):
@@ -93,7 +104,7 @@ def fetch_repo_data(repo_url):
             contents = repo.directory_contents(path, return_as=dict)
             for filename, file_obj in contents.items():
                 full_path = f"{path}{filename}"
-                if file_obj.type == "file" and filename.endswith((".py", ".js", ".c",".kt")):
+                if file_obj.type == "file" and filename.endswith((".py", ".js", ".c",".kt", ".java", ".cpp", ".h", ".ts", ".tsx", ".jsx")):
                     if file_obj.decoded:
                         try:
                             content = file_obj.decoded.decode("utf-8")
@@ -224,12 +235,12 @@ def analyze_code(code_snippet, file_path, file_size, last_commit, max_length=512
         "quality_score": quality_score
     }
 
-def analyze_repo(repo_url):
+def analyze_repo(repo_url, github_token=None):
     global progress
     output_dir = f"../output_{hashlib.md5(repo_url.encode()).hexdigest()}"  # Relative to backend/
     os.makedirs(output_dir, exist_ok=True)
 
-    metadata, code_files = fetch_repo_data(repo_url)
+    metadata, code_files = fetch_repo_data(repo_url, github_token)
     progress = {"status": "analyzing", "current_file": "", "total_files": len(code_files), "processed_files": 0}
 
     file_jsons = []
@@ -282,6 +293,13 @@ def analyze_repo(repo_url):
         avg_complexity, repo_coherence = 0, 0
 
     quality_scores = []
+    for file_json_path in file_jsons:
+        with open(file_json_path, "r") as f:
+            data = json.load(f)
+            quality_scores.append(data.get("quality_score", 0))
+    
+    avg_quality_score = sum(quality_scores) / len(quality_scores) if quality_scores else 0
+
     repo_stats = {
         "metadata": metadata,
         "repo_purpose": repo_purpose,
@@ -318,10 +336,11 @@ def analyze_repo(repo_url):
 def analyze():
     data = request.get_json()
     repo_url = data.get('repo_url')
+    github_token = data.get('github_token')
     if not repo_url:
         return jsonify({"error": "No repo_url provided"}), 400
     try:
-        result = analyze_repo(repo_url)
+        result = analyze_repo(repo_url, github_token)
         return jsonify(result)
     except Exception as e:
         print(f"Error processing {repo_url}: {e}")

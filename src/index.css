@@ -1,7 +1,7 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Jersey+10&family=Jersey+15&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@import "tailwindcss";
 @import "tw-animate-css";
 
 /* 
@@ -10,12 +10,12 @@
 
 @font-face {
 	font-family: "Chalet New York 1960";
-	src: url("../public/fonts/Chalet\ NewYorkNineteenSixty\ Regular.otf");
+	src: url("/fonts/Chalet NewYorkNineteenSixty Regular.otf");
 }
 
 @font-face {
 	font-family: "Bebas Neue Pro SemiExpanded ExtraBold";
-	src: url("../public/fonts/Bebas-Neue-Pro-SemiExpanded-ExtraBold-BF66cf3d787da5a.ttf");
+	src: url("/fonts/Bebas-Neue-Pro-SemiExpanded-ExtraBold-BF66cf3d787da5a.ttf");
 }
 
 @layer utilities {

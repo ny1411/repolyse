@@ -34,10 +34,12 @@ function Dashboard() {
 			const apiURL = `https://api.github.com/repos/${owner}/${repo}`;
 
 			try {
+				const headers = {};
+				if (token) {
+					headers.Authorization = `token ${token}`;
+				}
 				const response = await fetch(apiURL, {
-					headers: {
-						Authorization: `token ${token}`,
-					},
+					headers,
 				});
 				if (!response.ok) {
 					throw new Error("Failed to fetch languages");
@@ -59,12 +61,12 @@ function Dashboard() {
 			if (!repoURL) return;
 			setIsAnalysisLoading(true);
 			try {
-				const response = await fetch("http://localhost:5000/analyze", {
+				const response = await fetch("http://127.0.0.1:5000/analyze", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ repo_url: repoURL }),
+					body: JSON.stringify({ repo_url: repoURL, github_token: token }),
 				});
 				if (!response.ok) throw new Error("Analysis failed");
 				const data = await response.json();
