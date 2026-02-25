@@ -28,10 +28,10 @@ gemini_client = genai.GenerativeModel("gemini-2.5-flash")
 codebert_tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
 codebert_model = AutoModel.from_pretrained("microsoft/codebert-base")
 roberta_tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-roberta_model = RobertaForSequenceClassification.from_pretrained("roberta-base", num_labels=2)
+roberta_model = RobertaForSequenceClassification.from_pretrained("cardiffnlp/twitter-roberta-base-sentiment-latest", num_labels=3)
 distilbert_tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
-distilbert_model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased", num_labels=2)
-t5_tokenizer = T5Tokenizer.from_pretrained("t5-small")
+distilbert_model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
+t5_tokenizer = T5Tokenizer.from_pretrained("t5-small", legacy=False)
 t5_model = T5ForConditionalGeneration.from_pretrained("t5-small")
 
 # Fine-Tune RoBERTa
@@ -57,13 +57,6 @@ roberta_dataset = FineTuneDataset(roberta_texts, roberta_labels, roberta_tokeniz
 roberta_loader = DataLoader(roberta_dataset, batch_size=2, shuffle=True)
 optimizer = torch.optim.AdamW(roberta_model.parameters(), lr=5e-5)
 roberta_model.train()
-for epoch in range(2):
-    for batch in roberta_loader:
-        outputs = roberta_model(**batch)
-        loss = outputs.loss
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
 
 # Fine-Tune DistilBERT
 distilbert_texts = ["eval(input())", "print('hello')", "exec('code')", "x = 5"]
@@ -72,13 +65,6 @@ distilbert_dataset = FineTuneDataset(distilbert_texts, distilbert_labels, distil
 distilbert_loader = DataLoader(distilbert_dataset, batch_size=2, shuffle=True)
 optimizer = torch.optim.AdamW(distilbert_model.parameters(), lr=5e-5)
 distilbert_model.train()
-for epoch in range(2):
-    for batch in distilbert_loader:
-        outputs = distilbert_model(**batch)
-        loss = outputs.loss
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
 
 roberta_model.eval()
 distilbert_model.eval()
@@ -159,6 +145,30 @@ def gemini_document(code_snippet, file_path):
 
 def analyze_code(code_snippet, file_path, file_size, last_commit, max_length=512):
     chunks = chunk_code(code_snippet)
+    if not chunks:
+        return {
+            "file_path": file_path,
+            "file_size": file_size,
+            "last_commit": last_commit,
+            "file_summary": "Empty or too small to analyze",
+            "file_documentation": "No documentation available",
+            "complexity_score": 0,
+            "avg_token_complexity": 0,
+            "vuln_score": 0,
+            "vuln_similarity": 0,
+            "vuln_keywords_detected": 0,
+            "vuln_classification": "Safe",
+            "token_count": 0,
+            "unique_tokens": 0,
+            "token_diversity": 0,
+            "lines": 0,
+            "comments": 0,
+            "comment_sentiment": "No comments",
+            "avg_line_length": 0,
+            "long_lines": 0,
+            "quality_score": 0
+        }
+
     all_embeddings = []
     all_token_embeddings = []
     for chunk in chunks:
@@ -241,22 +251,16 @@ def analyze_code(code_snippet, file_path, file_size, last_commit, max_length=512
 
 def analyze_repo(repo_url, github_token=None):
     global progress
-    output_dir = f"../output_{hashlib.md5(repo_url.encode()).hexdigest()}"  # Relative to backend/
-    os.makedirs(output_dir, exist_ok=True)
 
     metadata, code_files = fetch_repo_data(repo_url, github_token)
     progress = {"status": "analyzing", "current_file": "", "total_files": len(code_files), "processed_files": 0}
 
-    file_jsons = []
+    repo_analyses = []
     for file_path, file_data in tqdm(code_files.items(), desc="Processing files"):
         progress["current_file"] = file_path
         progress["processed_files"] += 1
         analysis = analyze_code(file_data["content"], file_path, file_data["size"], file_data["last_commit"])
-        file_hash = hashlib.md5(file_path.encode()).hexdigest()
-        file_json_path = f"{output_dir}/file_{file_hash}.json"
-        with open(file_json_path, "w") as f:
-            json.dump(analysis, f, indent=2)
-        file_jsons.append(file_json_path)
+        repo_analyses.append(analysis)
 
     file_summaries = "\n".join(f"{path}: {gemini_summarize(code_files[path]['content'], path)[:100]}..." for path in code_files.keys())
     prompt = f"Based on these file summaries and metadata, provide a concise summary of the purpose of this repository. The summary should be under 250 words. Output ONLY the tagline text. Do not use quotes or markdown. \nMetadata: {metadata}\nFiles:\n{file_summaries}"
@@ -297,13 +301,8 @@ def analyze_repo(repo_url, github_token=None):
         repo_coherence = np.mean(similarities) if similarities else 0
     else:
         avg_complexity, repo_coherence = 0, 0
-
-    quality_scores = []
-    for file_json_path in file_jsons:
-        with open(file_json_path, "r") as f:
-            data = json.load(f)
-            quality_scores.append(data.get("quality_score", 0))
     
+    quality_scores = [data.get("quality_score", 0) for data in repo_analyses] 
     avg_quality_score = sum(quality_scores) / len(quality_scores) if quality_scores else 0
 
     repo_stats = {
@@ -314,28 +313,12 @@ def analyze_repo(repo_url, github_token=None):
         "repo_coherence": repo_coherence,
         "avg_quality_score": avg_quality_score
     }
-    repo_stats_path = f"{output_dir}/repo_stats.json"
-    with open(repo_stats_path, "w") as f:
-        json.dump(repo_stats, f, indent=2)
-
-    zip_path = f"{output_dir}.zip"
-    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for file_json in file_jsons:
-            zipf.write(file_json, os.path.basename(file_json))
-        zipf.write(repo_stats_path, "repo_stats.json")
 
     progress["status"] = "complete"
-    
-    # Load all file analyses to return
-    all_file_analysis = []
-    for file_json_path in file_jsons:
-        with open(file_json_path, "r") as f:
-            all_file_analysis.append(json.load(f))
 
     return {
         "repo_stats": repo_stats,
-        "file_analysis": all_file_analysis,
-        "zip_path": zip_path
+        "file_analysis": repo_analyses
     }
 
 @app.route('/analyze', methods=['POST'])
@@ -355,10 +338,6 @@ def analyze():
 @app.route('/progress', methods=['GET'])
 def get_progress():
     return jsonify(progress)
-
-@app.route('/download/<path:file_path>', methods=['GET'])
-def download_file(file_path):
-    return send_file(file_path, as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
