@@ -13,16 +13,16 @@ function RepoLinkInput(props) {
 	return (
 		<>
 			<div
-				className="repo-link-form flex justify-center text-center items-center h-[70px] w-[800px] rounded-full 
-                backdrop-blur-xs m-20"
+				className="repo-link-form flex justify-center text-center items-center h-[55px] md:h-[70px] w-[95%] max-w-[800px] rounded-full 
+                backdrop-blur-xs my-10 md:m-20 mx-auto"
 				style={{
 					boxShadow:
 						"rgba(215, 215, 215, 0.3) 0px 0px 50px, rgb(215, 215, 215, 0.5) 0px 0px 150px",
 				}}
 			>
-				<a href="http://github.com/">
-					<svg
-						className="github-icon h-[50px] w-[50px] m-2.5 "
+				<a href="http://github.com/" className="flex-shrink-0">
+                    <svg
+                        className="github-icon h-[35px] w-[35px] md:h-[50px] md:w-[50px] m-2 md:m-2.5"
 						width="37"
 						height="37"
 						viewBox="0 0 37 36"
@@ -46,7 +46,7 @@ function RepoLinkInput(props) {
 				</a>
 
 				<input
-					className="outline-none border-none w-full text-center font-['Jersey_10'] text-[2rem] font-light p-2.5"
+					className="outline-none border-none w-full text-center font-['Jersey_10'] text-2xl md:text-[2rem] font-light p-2 md:p-2.5 bg-transparent"
 					type="text"
 					name="repo-link-input"
 					placeholder="paste repo link"
@@ -58,18 +58,13 @@ function RepoLinkInput(props) {
 					}}
 				/>
 				<button
-					className="paste-btn border-none outline-none rounded-r-full h-full 
-					flex items-center justify-center cursor-pointer 
-					bg-[rgba(255,255,255,0.7)] backdrop-blur-xs hover:bg-[#dddddd] active:bg-[#aaaaaa]"
-					style={{
-						width: "125px",
-						height: "inherit",
-					}}
+                    className="paste-btn border-none outline-none rounded-r-full h-full w-[70px] md:w-[125px] flex-shrink-0
+                    flex items-center justify-center cursor-pointer 
+                    bg-[rgba(255,255,255,0.7)] backdrop-blur-xs hover:bg-[#dddddd] active:bg-[#aaaaaa]"
 					onClick={HandleLinkPaste}
 				>
 					<svg
-						width="35"
-						height="35"
+						className="w-[25px] h-[25px] md:w-[35px] md:h-[35px]"
 						viewBox="0 0 35 35"
 						fill="none"
 						xmlns="http://www.w3.org/2000/svg"
