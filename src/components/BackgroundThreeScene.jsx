@@ -37,7 +37,9 @@ function BackgroundThreeScene() {
 				alpha: true,
 			});
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(renderer.domElement);
+            if (threeRef.current) {
+                threeRef.current.appendChild(renderer.domElement);
+            }
 
 			for (let line_index = 0; line_index < LINE_COUNT; line_index++) {
 				var x = Math.random() * 400 - 200;
@@ -95,16 +97,36 @@ function BackgroundThreeScene() {
 			}
 			position.needsUpdate = true;
 			renderer.render(scene, camera);
-			requestAnimationFrame(animate);
+			threeRef.animationId = requestAnimationFrame(animate);
 		}
 		init();
-	}, []);
+		
+		return () => {
+				// Stop the animation loop
+				if (threeRef.animationId) {
+                    cancelAnimationFrame(threeRef.animationId);
+                }
+                
+                // Remove the resize listener
+                window.removeEventListener("resize", onWindowResize);
+                
+                // Remove the canvas element from the DOM safely
+                if (threeRef.current && renderer && renderer.domElement) {
+                    // Check if it's actually a child before removing
+                    if (threeRef.current.contains(renderer.domElement)) {
+                        threeRef.current.removeChild(renderer.domElement);
+                    }
+                }
+                
+                // Free up memory
+                if (renderer) renderer.dispose();
+			};
+		}, []);
 
 	return (
 		<div
-			className="background-three-scene  z-[-100]"
-			ref={threeRef}
-			// style={{ maxwidth: "100vw", maxheight: "100vh" }}
+			className="fixed inset-0 w-full h-screen -z-50 pointer-events-none overflow-hidden bg-transparent"
+            ref={threeRef}
 		></div>
 	);
 }

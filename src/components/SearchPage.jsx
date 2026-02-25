@@ -18,15 +18,17 @@ function SearchPage() {
 
 	return (
 		<>
-			<BackgroundThreeScene />
-			<Header />
-			<div
-				className="container h-max absolute top-[50%] left-[50%] 
-			transform translate-x-[-50%] translate-y-[-50%] 
-			flex flex-col justify-center items-center"
-			>
-				<RepoLinkInput />
-				<SubmitBtn onClick={HandleSubmit} />
+			<div className="relative w-full min-h-screen overflow-hidden">
+				<BackgroundThreeScene />
+				<Header />
+				<div
+					className="absolute top-[50%] left-[50%] 
+				transform translate-x-[-50%] translate-y-[-50%] 
+				flex flex-col justify-center items-center w-full px-4 sm:px-0 sm:w-auto"
+				>
+					<RepoLinkInput />
+					<SubmitBtn onClick={HandleSubmit} />
+				</div>
 			</div>
 		</>
 	);
