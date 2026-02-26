@@ -106,7 +106,7 @@ function SideBar() {
 						<Users />
 						CONTRIBUTERS
 					</div>
-					<div
+					{/* <div
 						className={`file-structure-btn`}
 						onClick={() => navigate("/documentation")}
 					>
@@ -160,7 +160,7 @@ function SideBar() {
 								</li>
 							</ul>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</>
