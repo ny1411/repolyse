@@ -18,7 +18,7 @@ function SearchPage() {
 
 	return (
 		<>
-			<div className="relative w-full min-h-screen overflow-hidden">
+			{/* <div className="relative w-full min-h-screen overflow-hidden"> */}
 				<BackgroundThreeScene />
 				<Header />
 				<div
@@ -29,7 +29,7 @@ function SearchPage() {
 					<RepoLinkInput />
 					<SubmitBtn onClick={HandleSubmit} />
 				</div>
-			</div>
+			{/* </div> */}
 		</>
 	);
 }
